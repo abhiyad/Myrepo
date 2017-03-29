@@ -9,12 +9,13 @@ checkwin state n i=do
     if(i<n) then do
         winrow state n i
         wincol state n i
+        windiag state n
         checkwin state n (i+1)
         else return ()
 
 winrow state n i=do
         let s= sum' (state!!i)
-        if(s==n) then print "1 has Won" 
+        if(s==n) then print "1 has Won"
             else do
                 if( s==3*n) then print "3 has won" 
                     else
@@ -28,7 +29,16 @@ wincol state n i =do
             if(s==3*n) then print "3 has won"
                 else
                     return()
-
+windiag state n =do
+    let s1=diag1sum state (n-1) n
+    let s2=diag2sum state (n-1) n
+    if(s1==n||s2==n) then print "1 has won"
+        else do
+            if(s1==3*n||s2==3*n) then print "3 has won"
+                else
+                    return()
+    
+    
 main = do
     str<-getLine
     let n = read str :: Int
