@@ -1,5 +1,6 @@
 import Data.List
 sum' row =foldl (\acc x -> acc+x) 0 (filter (/=2) row)
+
 diag1list state 0 n =[state!!0!!0]
 diag1list state i n = [state!!i!!i] ++ diag1list state (i-1) n
 diag2list state 0 n = [state!!0!!(n-1)]
@@ -7,7 +8,7 @@ diag2list state i n = [state !!i!!(n-1-i)] ++ diag2list state (i-1) n
 
 windiag l n=do
     let s=sum' l
-    if(s==n) then print "1 has won"
+    if(s==2*n) then print "2 has won"
         else do
             if(s==3*n) then print "3 has won"
                 else
@@ -26,7 +27,7 @@ checkwin state n i=do
 
 winrow state n i=do
         let s= sum' (state!!i)
-        if(s==n) then print "1 has Won"
+        if(s==2*n) then print "2 has Won"
             else do
                 if( s==3*n) then print "3 has won" 
                     else
@@ -35,17 +36,47 @@ winrow state n i=do
 wincol state n i =do
     let m = transpose state
     let s=sum' (m!!i)
-    if(s==n) then print "1 has won"
+    if(s==2*n) then print "2 has won"
         else do
             if(s==3*n) then print "3 has won"
                 else
                     return()
 
-    
-    
+
+
+
+game state i j c n= do
+    let row=state !! i
+    let p1=take j row
+    let p2= drop (j+1) row
+    let nrow=p1++[2+c `mod` 2]++p2
+    let py1=take i state
+    let py2=drop (i+1) state
+    let f=py1++[nrow]++py2
+    printgame f n 0
+    checkwin f n 0
+    input f n (c+1)
+
+
+input state n c= do
+    str2<-getLine
+    let i=read str2::Int
+    str3<-getLine
+    let j=read str3::Int
+    game state i j (c `mod` 2) n
+
+                      
+                    
+printgame state n i= do
+      print (state !! i)
+      if(i<n-1) 
+          then do
+              printgame state n (i+1)
+      else print "------------------"    
+
 main = do
+    print "please enter dimension of the Grid"
     str<-getLine
-    let n = read str :: Int
-    let l = replicate n ( replicate n 3)
-    checkwin l n 0
-    print "result is declared"
+    let n = read str::Int
+    let state = (replicate n) ((replicate n) 8)
+    input state n 0
