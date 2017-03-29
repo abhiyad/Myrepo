@@ -46,16 +46,21 @@ wincol state n i =do
 
 
 game state i j c n= do
-    let row=state !! i
-    let p1=take j row
-    let p2= drop (j+1) row
-    let nrow=p1++[2+c `mod` 2]++p2
-    let py1=take i state
-    let py2=drop (i+1) state
-    let f=py1++[nrow]++py2
-    printgame f n 0
-    checkwin f n 0
-    input f n (c+1)
+    if(state!!i!!j==8) then do
+    
+        let row=state !! i
+        let p1=take j row
+        let p2= drop (j+1) row
+        let nrow=p1++[2+c `mod` 2]++p2
+        let py1=take i state
+        let py2=drop (i+1) state
+        let f=py1++[nrow]++py2
+        printgame f n 0
+        checkwin f n 0
+        input f n (c+1)
+        else
+            input state n c
+        
 
 
 input state n c= do
