@@ -1,0 +1,37 @@
+import Data.List
+sum' row =foldl (\acc x -> acc+x) 0 (filter (/=2) row)
+diag1sum state 0 n =(state!!0!!0)
+diag1sum state i n = (state!!i!!i) + diag1sum state (i-1) n
+diag2sum state 0 n = (state!!0!!(n-1))
+diag2sum state i n = (state !!i!!(n-1-i)) + diag2sum state (i-1) n
+
+checkwin state n i=do
+    if(i<n) then do
+        winrow state n i
+        wincol state n i
+        checkwin state n (i+1)
+        else return ()
+
+winrow state n i=do
+        let s= sum' (state!!i)
+        if(s==n) then print "1 has Won" 
+            else do
+                if( s==3*n) then print "3 has won" 
+                    else
+                       return()
+
+wincol state n i =do
+    let m = transpose state
+    let s=sum' (m!!i)
+    if(s==n) then print "1 has won"
+        else do
+            if(s==3*n) then print "3 has won"
+                else
+                    return()
+
+main = do
+    str<-getLine
+    let n = read str :: Int
+    let l = replicate n ( replicate n 3)
+    checkwin l n 0
+    print "result is declared"
