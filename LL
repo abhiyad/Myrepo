@@ -1,0 +1,50 @@
+#include<stdio.h>
+struct node
+{
+    int data;
+    struct node *next;
+};
+void addbefore (struct node **head_ref,int n)
+{
+    struct node *t= (struct node *)malloc (sizeof(struct node));
+    t -> data =n;
+    t ->next =*(head_ref);
+    *(head_ref)= t;
+}
+void add (struct node ** head_ref , int n)
+{
+    struct node * last = *head_ref;
+    struct node *t = (struct node *)malloc (sizeof(struct node));
+    t -> data = n;
+    t->next = NULL;
+    if(*head_ref== NULL)
+    {*head_ref=t;return;}
+    while(last->next!=NULL)last= last ->next;
+    last ->next=t;return ;
+}
+
+void display (struct node *head)
+{
+    struct node *cur =head;
+    while (cur!=NULL)
+    {
+        printf("%d ->",cur->data);
+        cur = cur ->next;
+    }
+}
+
+void displayrev(struct node *head)
+{
+    if(head == NULL )
+    return ;
+    displayrev(head -> next);
+    printf("%d",head->data);
+}
+int main ()
+{
+    struct node *head = NULL;
+    add (&head,5);
+    add(&head,7);
+    add (&head ,8);
+    display(head);
+}
